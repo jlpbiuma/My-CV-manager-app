@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { useState } from "react";
 import SearchBar from "@/Pages/DashboardPage/SearchBar";
-import RecentActivity from "@/Pages/DashboardPage/RecentActivity";
+import ActivitiesList from "@/Pages/DashboardPage/ActivitiesList";
 import type { CV } from "@/types/cv"; // Adjust the import path as necessary
 import type { Activity } from "@/types/activity"; // Adjust the import path as necessary
 import DashboardTabs from "@/Pages/DashboardPage/DashboardTabs";
@@ -47,7 +47,7 @@ const DashboardPage = ({ cvs, activities }: DashboardPageProps) => {
                     <SearchBar searchQuery={searchQuery} handleSearch={handleSearch} />
                     <DashboardTabs activeTab={activeTab} isLoading={isLoading} handleTabChange={handleTabChange} filteredCVs={filteredCVs} />
                 </div>
-                <RecentActivity activities={activities} />
+                <ActivitiesList activities={activities} />
             </div>
         </AuthenticatedLayout>
     );

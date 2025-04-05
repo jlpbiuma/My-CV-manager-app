@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +19,26 @@ class DatabaseSeeder extends Seeder
 
         // Call the ActivitySeeder
         $this->call(ActivitySeeder::class);
+
+        // Call the ExperienceSeeder
+        $this->call(ExperienceSeeder::class);
+
+        // Call the FormacionSeeder
+        $this->call(FormacionSeeder::class);
+
+        // Call the EstudiosSeeder
+        $this->call(EstudiosSeeder::class);
+
+        // Call the IdiomasSeeder
+        $this->call(IdiomasSeeder::class);
+
+        // Call the ProyectsSeeder
+        $this->call(ProyectsSeeder::class);
+
+        // Call the CertificationsSeeder
+        $this->call(CertificationsSeeder::class);
+
+        // Call the WebSeeder
+        $this->call(WebSeeder::class);
     }
 }

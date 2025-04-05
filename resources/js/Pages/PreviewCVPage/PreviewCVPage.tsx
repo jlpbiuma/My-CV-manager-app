@@ -1,10 +1,9 @@
 import { PageProps } from '@inertiajs/inertia';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft } from 'lucide-react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import type { CV } from '@/types/cv'; // Adjust the import path as necessary
 import { route } from '../../../../vendor/tightenco/ziggy/src/js/index';
-
 interface PreviewCVPageProps extends PageProps {
     cv: CV;
 }
@@ -12,6 +11,7 @@ interface PreviewCVPageProps extends PageProps {
 export default function PreviewCVPage({ cv }: PreviewCVPageProps) {
     return (
         <AuthenticatedLayout>
+            <Head title="Preview CV" />
             <Link
                 href={route('dashboard')}
                 className="flex items-center text-sm text-gray-600 hover:text-gray-900 mb-4"

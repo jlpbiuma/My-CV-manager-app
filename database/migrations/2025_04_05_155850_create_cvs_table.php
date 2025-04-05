@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('cvs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Link to the user
             $table->string('name');
             $table->string('language');
             $table->string('preview_image');
             $table->string('last_updated');
             $table->string('status');
+            $table->string('resume')->nullable(); // New field
+            $table->string('image_url')->nullable(); // New field
+            $table->string('template')->nullable(); // New field
+            $table->string('url')->nullable(); // New field
             $table->timestamps();
         });
     }

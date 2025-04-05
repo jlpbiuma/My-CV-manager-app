@@ -5,23 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CV extends Model
+class Experience extends Model
 {
     use HasFactory;
 
-    protected $table = 'cvs';
-
     protected $fillable = [
         'user_id',
-        'name',
-        'language',
-        'preview_image',
-        'last_updated',
-        'status',
-        'resume',
-        'image_url',
-        'template',
-        'url',
+        'title',
+        'company',
+        'description',
+        'start_date',
+        'end_date',
     ];
 
     // Define the relationship with the User model

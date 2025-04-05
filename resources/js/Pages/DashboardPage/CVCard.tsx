@@ -15,21 +15,25 @@ const CVCard = ({
     preview_image,
     last_updated,
     status,
+    resume,
+    image_url,
+    template,
+    url,
     created_at,
     updated_at
 }: CV) => {
 
-    const handleDownload = () => {
-        // Implement download functionality here
-    };
+    // const handleDownload = () => {
+    //     // Implement download functionality here
+    // };
 
-    const handleEdit = () => {
-        // Implement edit functionality here
-    };
+    // const handleEdit = () => {
+    //     // Implement edit functionality here
+    // };
 
-    const handleDelete = () => {
-        // Implement delete functionality here
-    };
+    // const handleDelete = () => {
+    //     // Implement delete functionality here
+    // };
 
     return (
         <Card key={user_id} className="flex flex-col overflow-hidden transition-all hover:shadow-md">
@@ -56,9 +60,11 @@ const CVCard = ({
                 <Button size="sm" className="flex-1 min-w-[100px] bg-blue-600 hover:bg-blue-700">
                     <Download className="mr-2 h-3 w-3" /> Download
                 </Button>
-                <Button size="sm" className="flex-1 min-w-[100px] bg-teal-600 hover:bg-teal-700">
-                    <Edit className="mr-2 h-3 w-3" /> Edit
-                </Button>
+                <Link href={route('cv.build', { cv_id: id })}>
+                    <Button size="sm" className="flex-1 min-w-[100px] bg-teal-600 hover:bg-teal-700">
+                        <Edit className="mr-2 h-3 w-3" /> Edit
+                    </Button>
+                </Link>
                 <Button size="sm" className="flex-1 min-w-[100px] bg-red-500 hover:bg-red-600">
                     <Trash2 className="mr-2 h-3 w-3" /> Delete
                 </Button>

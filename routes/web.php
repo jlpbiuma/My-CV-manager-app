@@ -25,6 +25,15 @@ Route::get('/cv/{cv}', [CVController::class, 'show'])
     ->middleware(['auth', 'verified'])
     ->name('cv.show');
 
+// Build a specific CV
+Route::get('/cv/{cv_id}/build', [CVController::class, 'build'])
+    ->middleware(['auth', 'verified'])
+    ->name('cv.build');
+
+// Route::get('/cv/{cv}/edit', [CVController::class, 'edit'])
+//     ->middleware(['auth', 'verified'])
+//     ->name('cv.edit');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

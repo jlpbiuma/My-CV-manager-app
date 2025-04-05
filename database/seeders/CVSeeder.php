@@ -18,9 +18,13 @@ class CVSeeder extends Seeder
             'user_id' => 1, // Ensure this matches the user ID created in UserSeeder
             'name' => 'John Doe',
             'language' => 'English',
-            'preview_image' => 'https://cdn-icons-png.flaticon.com/512/65/65032.png',
+            'preview_image' => 'https://example.com/image.jpg',
             'last_updated' => now(),
             'status' => 'active',
+            'resume' => 'https://example.com/resume.pdf',
+            'image_url' => 'https://example.com/image.jpg',
+            'template' => 'template1',
+            'url' => 'https://example.com/cv',
         ]);
     }
 }
