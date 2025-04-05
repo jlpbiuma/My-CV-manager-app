@@ -11,12 +11,14 @@ export function CvSection({
     moveSection,
     removeSection,
     sectionMap,
+    cvItems,
 }: {
     section: any
     sections: any
     moveSection: (id: number, x: number, y: number) => void
     removeSection: (id: number) => void
     sectionMap: any
+    cvItems: Array<{ type: string; itemId: number }>
 }) {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "SECTION",
@@ -25,6 +27,11 @@ export function CvSection({
             isDragging: !!monitor.isDragging(),
         }),
     }))
+
+    // Check if an item is already in the canvas
+    const isItemInCanvas = (type: string, itemId: number) => {
+        return cvItems.some((item) => item.type === type && item.itemId === itemId)
+    }
 
     const getSectionContent = () => {
         const SectionComponent = sectionMap[section.type]?.component

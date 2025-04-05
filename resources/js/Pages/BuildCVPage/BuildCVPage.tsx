@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { DndProvider } from "react-dnd"
-import { HTML5Backend } from "react-dnd-html5-backend"
 import html2canvas from "html2canvas"
 import axios from "axios"
 import { CvCanvas } from "@/Pages/BuildCVPage/components/canvas/CvCanvas"
@@ -24,7 +22,7 @@ export default function BuildCVPage({ cv, sections }: CvFull) {
         }>
     >([])
 
-    const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof CV_TEMPLATES>("CREATIVE")
+    const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof CV_TEMPLATES>("modern")
 
     const moveItem = (id: string, x: number, y: number) => {
         setCvItems((prev) => prev.map((item) => (item.id === id ? { ...item, position: { x, y } } : item)))
@@ -80,36 +78,38 @@ export default function BuildCVPage({ cv, sections }: CvFull) {
     }
 
     return (
-        <DndProvider backend={HTML5Backend}>
-            <div className="flex h-screen bg-gray-100">
-                {/* Left sidebar - Sections panel */}
-                <SectionsSidebar sectionMap={SECTION_MAP} sections={sections} onAddItem={addItem} />
+        <div className="flex h-screen bg-gray-100">
+            {/* Left sidebar - Sections panel */}
+            <SectionsSidebar
+                sectionMap={SECTION_MAP}
+                sections={sections}
+                onAddItem={addItem}
+                selectedTemplate={selectedTemplate}
+            />
 
-
-                {/* Main CV editor area */}
-                <div className="flex-1 p-8 overflow-auto">
-                    <div className="max-w-3xl mx-auto">
-                        <div className="flex justify-between items-center mb-4">
-                            <h1 className="text-2xl font-bold">CV Builder</h1>
-                            <Button onClick={generatePdf} className="px-4 py-2" variant="default">
-                                <Download className="mr-2 h-4 w-4" />
-                                Generate PDF
-                            </Button>
-                        </div>
-
-                        {/* CV Preview */}
-                        <CvCanvas
-                            cvItems={cvItems}
-                            sections={sections}
-                            moveItem={moveItem}
-                            removeItem={removeItem}
-                            sectionMap={SECTION_MAP}
-                            selectedTemplate={selectedTemplate}
-                        />
+            {/* Main CV editor area */}
+            <div className="flex-1 p-8 overflow-auto">
+                <div className="max-w-3xl mx-auto">
+                    <div className="flex justify-between items-center mb-4">
+                        <h1 className="text-2xl font-bold">CV Builder</h1>
+                        <Button onClick={generatePdf} className="px-4 py-2" variant="default">
+                            <Download className="mr-2 h-4 w-4" />
+                            Generate PDF
+                        </Button>
                     </div>
+
+                    {/* CV Preview */}
+                    <CvCanvas
+                        cvItems={cvItems}
+                        sections={sections}
+                        moveItem={moveItem}
+                        removeItem={removeItem}
+                        sectionMap={SECTION_MAP}
+                        selectedTemplate={selectedTemplate}
+                    />
                 </div>
             </div>
-        </DndProvider>
+        </div>
     )
 }
 
