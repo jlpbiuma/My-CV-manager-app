@@ -1,23 +1,26 @@
-// resources/js/components/SearchBar.tsx
-import React from 'react'; // Add this import
 import { Input } from "@/components/ui/input";
 
 interface SearchBarProps {
     searchQuery: string;
-    setSearchQuery: (query: string) => void;
+    handleSearch: (query: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, setSearchQuery }) => {
+const SearchBar = ({ searchQuery, handleSearch }: SearchBarProps) => {
     return (
-        <div className="mb-4">
-            <Input
-                type="text"
-                placeholder="Search CVs by name..."
-                value={searchQuery}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-                className="w-full"
-            />
-        </div>
+        <>
+            <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-slate-900">My CVs</h3>
+            </div>
+            <div className="mb-4">
+                <Input
+                    type="text"
+                    placeholder="Search CVs by name..."
+                    value={searchQuery}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSearch(e.target.value)}
+                    className="w-full"
+                />
+            </div>
+        </>
     );
 };
 

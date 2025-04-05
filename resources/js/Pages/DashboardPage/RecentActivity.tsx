@@ -1,19 +1,12 @@
 // resources/js/components/RecentActivity.tsx
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Edit, Plus, FileText } from "lucide-react";
-
-interface Activity {
-    id: number;
-    type: 'update' | 'create' | 'download';
-    description: string;
-    timestamp: string;
-}
-
+import { Activity } from "@/types/activity"; // Adjust the import path as necessary
 interface RecentActivityProps {
-    mockActivities: Activity[];
+    activities: Activity[];
 }
 
-const RecentActivity = ({ mockActivities }: RecentActivityProps) => {
+const RecentActivity = ({ activities }: RecentActivityProps) => {
     return (
         <div className="mt-8">
             <Card>
@@ -23,7 +16,7 @@ const RecentActivity = ({ mockActivities }: RecentActivityProps) => {
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
-                        {mockActivities.map(activity => (
+                        {activities.map(activity => (
                             <div key={activity.id} className="flex items-center gap-4 rounded-lg border p-3">
                                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-teal-100">
                                     {activity.type === 'update' && <Edit className="h-5 w-5 text-teal-600" />}

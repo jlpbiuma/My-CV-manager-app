@@ -1,10 +1,6 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import { Bell, FileText, Home, Menu, Plus, Search, Settings } from "lucide-react"
+import { FileText, Home, Menu, Plus, Settings } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,19 +12,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
+export default function AuthenticatedLayout({ children }) {
+  const user = usePage().props.auth.user;
 
+  const [showingNavigationDropdown, setShowingNavigationDropdown] =
+    useState(false);
 
-export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
-
-    const [showingNavigationDropdown, setShowingNavigationDropdown] =
-        useState(false);
-
-    return (
-      <div className="min-h-screen bg-slate-50">
+  return (
+    <div className="min-h-screen bg-slate-50">
       <header className="sticky top-0 z-50 w-full border-b bg-white">
         <div className="flex h-16 items-center px-4 md:px-6">
           <Sheet>
@@ -56,7 +49,16 @@ export default function AuthenticatedLayout({ header, children }) {
                 </Link>
                 <Link href="#" className="flex items-center gap-2 text-slate-600 hover:text-slate-900">
                   <Settings className="h-5 w-5" />
-                  Settings
+                  Templates
+                </Link>
+                <Link href="#" className="flex items-center gap-2 text-slate-600 hover:text-slate-900">
+                  <Settings className="h-5 w-5" />
+                  Templates
+                </Link>
+                <Link href="#">
+                  <Button className="text-sm bg-teal-600 hover:bg-teal-700 flex items-center">
+                    <Plus className="mr-2 h-4 w-4" /> Create New CV
+                  </Button>
                 </Link>
               </nav>
             </SheetContent>
@@ -66,7 +68,7 @@ export default function AuthenticatedLayout({ header, children }) {
               <FileText className="h-6 w-6 text-teal-600" />
               <span className="ml-2 text-xl font-bold text-slate-900">CV Manager</span>
             </Link>
-            <nav className="hidden md:flex md:gap-4 lg:gap-6">
+            <nav className="hidden md:flex md:items-center md:gap-4 lg:gap-6">
               <Link
                 href={route("dashboard")}
                 className={cn(
@@ -82,23 +84,14 @@ export default function AuthenticatedLayout({ header, children }) {
               <Link href="#" className="text-sm font-medium text-slate-600 transition-colors hover:text-teal-600">
                 Templates
               </Link>
+              <Link href="#">
+                <Button className="text-sm bg-teal-600 hover:bg-teal-700 flex items-center">
+                  <Plus className="mr-2 h-4 w-4" /> Create New CV
+                </Button>
+              </Link>
             </nav>
           </div>
           <div className="ml-auto flex items-center gap-4">
-            <form className="hidden md:flex">
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-500" />
-                <Input
-                  type="search"
-                  placeholder="Search..."
-                  className="w-64 rounded-lg bg-white pl-8 focus-visible:ring-teal-500"
-                />
-              </div>
-            </form>
-            <Button variant="ghost" size="icon" className="text-slate-500 hover:text-slate-900">
-              <Bell className="h-5 w-5" />
-              <span className="sr-only">Notifications</span>
-            </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="sm" className="relative h-8 rounded-full">
@@ -132,17 +125,7 @@ export default function AuthenticatedLayout({ header, children }) {
           </div>
         </div>
       </header>
-      <div className="bg-white border-b">
-        <div className="container mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="text-2xl font-bold text-slate-900">{header}</div>
-            <Button className="bg-teal-600 hover:bg-teal-700">
-              <Plus className="mr-2 h-4 w-4" /> Create New CV
-            </Button>
-          </div>
-        </div>
-      </div>
       <main className="container mx-auto py-6 px-4">{children}</main>
     </div>
-    );
+  );
 }
