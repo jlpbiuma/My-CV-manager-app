@@ -5,12 +5,13 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import html2canvas from "html2canvas"
 import axios from "axios"
-import { CvCanvas } from "@/Pages/BuildCVPage/components/canvas/BuildCVCanvas"
+import { CvCanvas } from "@/Pages/BuildCVPage/components/canvas/CvCanvas"
 import { SectionsSidebar } from "@/Pages/BuildCVPage/components/SectionsSidebar"
 import { Button } from "@/components/ui/button"
 import { Download } from "lucide-react"
 import type { CvFull } from "@/types/cv_full"
 import { SECTION_MAP } from "@/Pages/BuildCVPage/constants/SectionsMapper"
+import { CV_TEMPLATES } from "@/Pages/BuildCVPage/constants/CvTemplates"
 
 export default function BuildCVPage({ cv, sections }: CvFull) {
     console.log(sections)
@@ -22,6 +23,8 @@ export default function BuildCVPage({ cv, sections }: CvFull) {
             position: { x: number; y: number }
         }>
     >([])
+
+    const [selectedTemplate, setSelectedTemplate] = useState<keyof typeof CV_TEMPLATES>("CREATIVE")
 
     const moveItem = (id: string, x: number, y: number) => {
         setCvItems((prev) => prev.map((item) => (item.id === id ? { ...item, position: { x, y } } : item)))
@@ -82,6 +85,7 @@ export default function BuildCVPage({ cv, sections }: CvFull) {
                 {/* Left sidebar - Sections panel */}
                 <SectionsSidebar sectionMap={SECTION_MAP} sections={sections} onAddItem={addItem} />
 
+
                 {/* Main CV editor area */}
                 <div className="flex-1 p-8 overflow-auto">
                     <div className="max-w-3xl mx-auto">
@@ -100,6 +104,7 @@ export default function BuildCVPage({ cv, sections }: CvFull) {
                             moveItem={moveItem}
                             removeItem={removeItem}
                             sectionMap={SECTION_MAP}
+                            selectedTemplate={selectedTemplate}
                         />
                     </div>
                 </div>

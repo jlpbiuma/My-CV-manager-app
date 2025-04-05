@@ -3,7 +3,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import type { CvFull } from "@/types/cv_full"
-import type { SectionType } from "./SectionsMapper"
+import { SECTION_MAP, type SectionType } from "@/Pages/BuildCVPage/constants/SectionsMapper" // Update with the correct path
 
 export function SectionsSidebar({
     sectionMap,
@@ -34,7 +34,7 @@ export function SectionsSidebar({
                                 </AccordionTrigger>
                                 <AccordionContent>
                                     <div className="space-y-2 mt-1 pl-2">
-                                        {getSectionItems(sectionType as SectionType, sections).map((item) => (
+                                        {SECTION_MAP[sectionType as SectionType]?.getItems(sections).map((item) => (
                                             <DraggableItem
                                                 key={item.id}
                                                 sectionType={sectionType}
@@ -108,26 +108,3 @@ function DraggableItem({
         </Card>
     )
 }
-
-// Helper function to get the correct items for each section type
-function getSectionItems(sectionType: SectionType, sections: CvFull["sections"]) {
-    switch (sectionType) {
-        case "experiencias":
-            return sections.experiencias || []
-        case "formaciones":
-            return sections.formaciones || []
-        case "estudios":
-            return sections.estudios || []
-        case "proyectos":
-            return sections.proyectos || []
-        case "certificaciones":
-            return sections.certificaciones || []
-        case "idiomas":
-            return sections.idiomas || []
-        case "webs":
-            return sections.webs || []
-        default:
-            return []
-    }
-}
-

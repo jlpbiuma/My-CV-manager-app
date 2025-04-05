@@ -12,6 +12,8 @@ import type { Proyect } from "@/types/proyect"
 import type { Certification } from "@/types/certification"
 import type { Idioma } from "@/types/idioma"
 import type { Web } from "@/types/web"
+import { SECTION_MAP } from "@/Pages/BuildCVPage/constants/SectionsMapper"
+import formatDate from "@/Pages/BuildCVPage/utils/formatDate"
 
 export function CvItem({
     item,
@@ -31,7 +33,7 @@ export function CvItem({
     removeItem: (id: string) => void
     sectionMap: Record<string, any>
 }) {
-    const [{ isDragging }, drag] = useDrag(() => ({
+    const [{ isDragging }, drag, preview] = useDrag(() => ({
         type: "CV_ITEM",
         item: {
             id: item.id,
@@ -44,7 +46,7 @@ export function CvItem({
 
     // Get the actual data for this item
     const getItemData = () => {
-        const sectionItems = getSectionItems(item.type, sections)
+        const sectionItems = SECTION_MAP[item.type]?.getItems(sections) || []
         return sectionItems.find((i) => i.id === item.itemId) || {}
     }
 
@@ -73,78 +75,43 @@ export function CvItem({
     }
 
     return (
-        <Card
+        <div
+            ref={preview}
             style={{
                 position: "absolute",
                 left: `${item.position.x}px`,
                 top: `${item.position.y}px`,
                 opacity: isDragging ? 0.5 : 1,
                 width: "400px",
+                zIndex: isDragging ? 1000 : 1,
             }}
-            className="shadow-md border border-gray-200 transition-shadow hover:shadow-lg"
+            className="transition-shadow"
         >
-            <CardHeader
-                className="p-3 flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50 cursor-move"
-                ref={drag}
-            >
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                    <GripVertical className="h-4 w-4 text-gray-500" />
-                    {sectionMap[item.type]?.icon} {getItemTitle(item.type, itemData)}
-                </CardTitle>
-                <Button variant="ghost" size="sm" className="h-8 w-8 p-0 rounded-full" onClick={() => removeItem(item.id)}>
-                    <X className="h-4 w-4" />
-                </Button>
-            </CardHeader>
-            <CardContent className="p-4">{renderItemContent()}</CardContent>
-        </Card>
+            <Card className="shadow-md border border-gray-200 hover:shadow-lg">
+                <CardHeader
+                    className="p-3 flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-50 cursor-move"
+                    ref={drag}
+                >
+                    <CardTitle className="text-sm font-medium flex items-center gap-2">
+                        <GripVertical className="h-4 w-4 text-gray-500" />
+                        {sectionMap[item.type]?.icon} {SECTION_MAP[item.type]?.itemTitle(itemData)}
+                    </CardTitle>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 rounded-full hover:bg-red-50 hover:text-red-500"
+                        onClick={() => removeItem(item.id)}
+                    >
+                        <X className="h-4 w-4" />
+                    </Button>
+                </CardHeader>
+                <CardContent className="p-4 bg-white">{renderItemContent()}</CardContent>
+            </Card>
+        </div>
     )
 }
 
-// Helper function to get the correct items for each section type
-function getSectionItems(sectionType: string, sections: CvFull["sections"]) {
-    switch (sectionType) {
-        case "experiencias":
-            return sections.experiencias || []
-        case "formaciones":
-            return sections.formaciones || []
-        case "estudios":
-            return sections.estudios || []
-        case "proyectos":
-            return sections.proyectos || []
-        case "certificaciones":
-            return sections.certificaciones || []
-        case "idiomas":
-            return sections.idiomas || []
-        case "webs":
-            return sections.webs || []
-        default:
-            return []
-    }
-}
-
-// Helper function to get a title for the item
-function getItemTitle(type: string, data: any) {
-    switch (type) {
-        case "experiencias":
-            return data.title || "Experience"
-        case "formaciones":
-            return data.degree || "Education"
-        case "estudios":
-            return data.degree || "Study"
-        case "proyectos":
-            return data.title || "Project"
-        case "certificaciones":
-            return data.name || "Certification"
-        case "idiomas":
-            return data.language || "Language"
-        case "webs":
-            return data.type || "Website"
-        default:
-            return "Item"
-    }
-}
-
-// Render functions for each item type
+// Render functions remain the same as in your original code
 function renderExperience(data: Experience) {
     return (
         <div>
@@ -251,19 +218,3 @@ function renderWeb(data: Web) {
         </div>
     )
 }
-
-// Helper function to format dates
-function formatDate(dateString: string) {
-    if (!dateString) return ""
-
-    try {
-        const date = new Date(dateString)
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-        })
-    } catch (e) {
-        return dateString
-    }
-}
-
