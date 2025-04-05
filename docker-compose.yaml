@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+  laravel-mysql-app:
+    build:
+      context: docker
+      dockerfile: mysql.dockerfile
+    container_name: ${MYSQL_CONTAINER_NAME:-my_cv_manager_app_mysql}  # Changed to use MYSQL_CONTAINER_NAME
+    ports:
+      - "${DB_PORT:-3306}:${MYSQL_INTERNAL_PORT:-3306}"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-secret}
+      - MYSQL_DATABASE=${DB_DATABASE:-my_cv_manager_app}
+      - MYSQL_PASSWORD=${DB_PASSWORD:-secret}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+    restart: unless-stopped
+  
+  laravel-app:
+    build:
+      context: .
+      dockerfile: docker/laravel.dockerfile
+    container_name: ${LARAVEL_CONTAINER_NAME:-my_cv_manager_app_laravel}
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/php.ini  # Optional PHP config
+    depends_on:
+      laravel-mysql-app:
+        condition: service_healthy
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=${DB_HOST:-laravel-mysql-app}
+      - DB_PORT=${DB_PORT:-3306}
+      - DB_DATABASE=${DB_DATABASE:-my_cv_manager_app}
+      - DB_USERNAME=${DB_USERNAME:-root}
+      - DB_PASSWORD=${DB_PASSWORD:-secret}
+      - APP_ENV=local
+      - APP_DEBUG=true
+    restart: unless-stopped
+  
+  laravel-node-app:
+    build:
+      context: .
+      dockerfile: docker/node.dockerfile
+    container_name: ${NODE_CONTAINER_NAME:-my_cv_manager_app_node}
+    ports:
+      - "${NODE_PORT:-5173}:5173"
+    volumes:
+      - ./:/var/www/html
+      - /var/www/html/node_modules  # Prevent host/node_modules overwrite
+    working_dir: /var/www/html
+    depends_on:
+      - laravel-app
+    environment:
+      - NODE_ENV=development
+      - VITE_APP_URL=http://localhost:${APP_PORT:-8000}  # Critical for Laravel+Vite
+      - VITE_APP_WS_URL=ws://localhost
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+    driver: local 

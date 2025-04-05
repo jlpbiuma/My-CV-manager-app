@@ -1,0 +1,64 @@
+# IDE and editor files
+.idea
+.vscode
+*.sublime-workspace
+*.sublime-project
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Laravel
+vendor/
+.env
+.env.production
+.env.local
+.env.testing
+.phpunit.result.cache
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+bootstrap/cache/*
+
+# Build assets
+public/css/
+public/js/
+public/build/
+public/hot
+
+# Testing
+.phpunit.cache
+coverage/
+
+# Docker
+docker-compose.override.yml
+docker-compose.prod.yml
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Local development
+docker-compose.local.yml
+docker-compose.dev.yml
+
+# Debug files
+*.log
+*.swp
+*.swo
+
+# Cache files
+.cache/
+
+# Optional (if not needed in container)
+tests/
